@@ -7,11 +7,16 @@
 
 #### Load library---------------------------------------------------------------
 
+# Load library
 library(tidyverse)
 library(osmdata)
 
+#### Get Map--------------------------------------------------------------------
+
+# Get bounding box
 getbb("Bondi Beach, Australia")
 
+# get major streets
 streets <- getbb("Bondi Beach, Australia")%>%
         opq()%>%
         add_osm_feature(key = "highway", 
@@ -20,6 +25,7 @@ streets <- getbb("Bondi Beach, Australia")%>%
         osmdata_sf()
 streets
 
+# get small streets
 small_streets <- getbb("Bondi Beach, Australia")%>%
         opq()%>%
         add_osm_feature(key = "highway", 
@@ -28,11 +34,13 @@ small_streets <- getbb("Bondi Beach, Australia")%>%
                                   "service", "footway")) %>%
         osmdata_sf()
 
+# get coast line
 coast <- getbb("Bondi Beach, Australia")%>%
         opq()%>%
         add_osm_feature(key = "natural", value = "coastline") %>%
         osmdata_sf()
 
+# plot data
 ggplot() +
         geom_sf(data = streets$osm_lines,
                 inherit.aes = FALSE,
@@ -54,6 +62,7 @@ ggplot() +
                 plot.background = element_rect(fill = "#282828")
         )
 
+# can use to rezise
 coord_sf(xlim = c(151.26, 151.28), 
          ylim = c(-33.895, -33.885),
          expand = FALSE)
